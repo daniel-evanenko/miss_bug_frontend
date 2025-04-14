@@ -3,17 +3,20 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { BugFilter } from '../cmps/bugFilter.jsx'
 
 
 export function BugIndex() {
     const [bugs, setBugs] = useState([])
+    const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
     useEffect(() => {
         loadBugs()
-    }, [])
+    }, [filterBy])
 
     async function loadBugs() {
-        const bugs = await bugService.query()
+        console.log("🚀 ~ loadBugs ~ loadBugs:", filterBy)
+        const bugs = await bugService.query(filterBy)
         setBugs(bugs)
     }
 
@@ -49,7 +52,8 @@ export function BugIndex() {
 
     async function onEditBug(bug) {
         const severity = +prompt('New severity?')
-        const bugToSave = { ...bug, severity }
+        const description = +prompt('New description?')
+        const bugToSave = { ...bug, severity, description }
         try {
 
             const savedBug = await bugService.save(bugToSave)
@@ -64,9 +68,13 @@ export function BugIndex() {
         }
     }
 
+    function onSetFilterBy(filterBy) {
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
+    }
     return (
         <section >
             <h3>Bugs App</h3>
+            <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} ></BugFilter>
             <main>
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />

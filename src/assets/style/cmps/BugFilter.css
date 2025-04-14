@@ -1,0 +1,21 @@
+.bug-filter {
+    background-color: var(--clr2bg);
+    padding: 1em;
+    margin-block: 1em;
+    border-radius: 5px;
+    form {
+        display: flex;
+        gap: 5px;
+        div {
+            display: flex;
+            flex-direction: column;
+            input {
+                width: 80%;
+                max-width: 200px;
+                min-width: 100px;
+            }
+        }
+    }
+
+
+}

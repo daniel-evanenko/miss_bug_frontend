@@ -10,12 +10,13 @@ export const bugService = {
     getById,
     save,
     remove,
+    getDefaultFilter
 }
 
 
-async function query() {
+async function query(filterBy = {}) {
     try {
-        const { data: bugs } = await axios.get(BASE_URL)
+        const { data: bugs } = await axios.get(BASE_URL, { params: filterBy })
         return bugs
     } catch (err) {
         console.log('err:', err)
@@ -49,4 +50,8 @@ async function save(bug) {
         console.log('err:', err)
         throw err
     }
+}
+
+function getDefaultFilter() {
+    return { title: '', severity: '' }
 }
