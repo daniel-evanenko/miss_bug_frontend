@@ -36,16 +36,16 @@ async function getById(bugId) {
 }
 async function remove(bugId) {
     try {
-        const { data: bug } = await axios.get(BASE_URL + bugId + '/remove')
-        return bug
+        return axios.delete(BASE_URL + bugId)
     } catch (err) {
         console.log('err:', err)
         throw err
     }
 }
 async function save(bug) {
+    const method = bug._id ? 'put' : 'post'
     try {
-        const { data: savedBug } = await axios.get(BASE_URL + 'save', { params: bug })
+        const { data: savedBug } = await axios[method](BASE_URL + (bug._id || ''), bug)
         return savedBug
     } catch (err) {
         console.log('err:', err)
@@ -55,7 +55,7 @@ async function save(bug) {
 
 async function downloadPdf() {
     try {
-        const response = await axios.get(BASE_URL + 'download-pdf', {
+        const response = await axios.get(BASE_URL + 'downloadPdf', {
             responseType: 'blob',
         })
         return response.data;
