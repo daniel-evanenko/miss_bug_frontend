@@ -10,7 +10,8 @@ export const bugService = {
     getById,
     save,
     remove,
-    getDefaultFilter
+    getDefaultFilter,
+    downloadPdf
 }
 
 
@@ -49,6 +50,18 @@ async function save(bug) {
     } catch (err) {
         console.log('err:', err)
         throw err
+    }
+}
+
+async function downloadPdf() {
+    try {
+        const response = await axios.get(BASE_URL + 'download-pdf', {
+            responseType: 'blob',
+        })
+        return response.data;
+    } catch (err) {
+        console.log('err', err);
+        throw err;
     }
 }
 

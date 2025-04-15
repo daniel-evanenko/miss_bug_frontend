@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react"
 import { utilService } from "../services/util.service.js"
 
-
 export function BugFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })

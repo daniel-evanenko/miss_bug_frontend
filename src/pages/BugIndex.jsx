@@ -15,7 +15,6 @@ export function BugIndex() {
     }, [filterBy])
 
     async function loadBugs() {
-        console.log("🚀 ~ loadBugs ~ loadBugs:", filterBy)
         const bugs = await bugService.query(filterBy)
         setBugs(bugs)
     }
@@ -71,12 +70,27 @@ export function BugIndex() {
     function onSetFilterBy(filterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
+
+    async function onDownloadBugs() {
+        try {
+            const pdfBlob = await bugService.downloadPdf()
+            const url = window.URL.createObjectURL(pdfBlob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'bugs.pdf'
+            a.click()
+            window.URL.revokeObjectURL(url)
+          } catch (err) {
+            console.error('Failed to download PDF:', err)
+          }
+    }
     return (
         <section >
             <h3>Bugs App</h3>
             <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} ></BugFilter>
             <main>
                 <button onClick={onAddBug}>Add Bug ⛐</button>
+                <button onClick={onDownloadBugs}>Download Bugs ⛐</button>
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>
         </section>
