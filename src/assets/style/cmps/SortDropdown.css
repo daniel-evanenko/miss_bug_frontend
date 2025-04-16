@@ -1,4 +1,7 @@
 .dropdown {
+    width: 80%;
+    max-width: 200px;
+    min-width: 100px;
 
     select {
         width: 80%;

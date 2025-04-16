@@ -2,16 +2,20 @@
 import { useEffect, useRef, useState } from "react"
 import { utilService } from "../services/util.service.js"
 import { SortDropdown } from "./SortDropdown.jsx"
+import { MultiSelectDropdown } from "./MultiSelectDropdown.jsx"
 
 export function BugFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
     const onSetFilterDebounce = useRef(utilService.debounce(onSetFilterBy, 300)).current
-    
+    const labels = ["api", "minor", "security", "dev-branch", "bug", "urgent", "validation", "frontend", "need-CR", "critical", "backend", "ux", "performance"];
+
+
+
     useEffect(() => {
         onSetFilterDebounce(filterByToEdit)
     }, [filterByToEdit])
-    
+
     function handleChange({ target }) {
         let { value, name: field, type } = target
         value = type === 'number' ? +value : value
@@ -19,7 +23,7 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
     }
 
 
-    const { title, severity, sortBy } = filterByToEdit
+    const { title, severity, sortBy, byLabels } = filterByToEdit
     return (
         <section className="bug-filter ">
             <h2>Bugs Filter</h2>
@@ -45,6 +49,12 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
                     />
                 </div>
                 <SortDropdown sortBy={sortBy} handleChange={handleChange}></SortDropdown>
+                <MultiSelectDropdown
+                    options={labels}
+                    selectedValues={byLabels}
+                    onChange={handleChange}
+                    name="byLabels"
+                />
             </form>
 
         </section>

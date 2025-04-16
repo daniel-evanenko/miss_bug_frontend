@@ -2,7 +2,8 @@ export const utilService = {
     makeId,
     makeLorem,
     getRandomIntInclusive,
-    debounce
+    debounce,
+    getRandomLabels
 }
 
 function makeId(length = 6) {
@@ -40,4 +41,10 @@ function debounce(func, timeout = 300) {
             func.apply(this, args)
         }, timeout)
     }
+}
+
+function getRandomLabels() {
+    const labels = ["api", "minor", "security", "dev-branch", "bug", "urgent", "validation", "frontend", "need-CR", "critical", "backend", "ux", "performance"];
+    const shuffled = [...labels].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.floor(Math.random() * labels.length) + 1);
 }

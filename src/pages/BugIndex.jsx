@@ -4,6 +4,7 @@ import { BugList } from '../cmps/BugList.jsx'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { BugFilter } from '../cmps/bugFilter.jsx'
+import { utilService } from '../services/util.service.js'
 
 
 export function BugIndex() {
@@ -36,7 +37,8 @@ export function BugIndex() {
             title: prompt('Bug title?'),
             severity: +prompt('Bug severity?'),
             description: prompt('Bug description'),
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            labels: utilService.getRandomLabels()
         }
         try {
             const savedBug = await bugService.save(bug)
@@ -80,9 +82,9 @@ export function BugIndex() {
             a.download = 'bugs.pdf'
             a.click()
             window.URL.revokeObjectURL(url)
-          } catch (err) {
+        } catch (err) {
             console.error('Failed to download PDF:', err)
-          }
+        }
     }
     return (
         <section >
