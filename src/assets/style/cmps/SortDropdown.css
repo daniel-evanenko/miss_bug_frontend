@@ -1,0 +1,8 @@
+.dropdown {
+
+    select {
+        width: 80%;
+        max-width: 200px;
+        min-width: 100px;
+    }
+}

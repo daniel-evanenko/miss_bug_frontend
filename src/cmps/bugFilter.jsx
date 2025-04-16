@@ -1,22 +1,25 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react"
 import { utilService } from "../services/util.service.js"
+import { SortDropdown } from "./SortDropdown.jsx"
 
 export function BugFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
     const onSetFilterDebounce = useRef(utilService.debounce(onSetFilterBy, 300)).current
-
+    
     useEffect(() => {
         onSetFilterDebounce(filterByToEdit)
     }, [filterByToEdit])
-
+    
     function handleChange({ target }) {
         let { value, name: field, type } = target
         value = type === 'number' ? +value : value
         setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
     }
 
+
+    const { title, severity, sortBy } = filterByToEdit
     return (
         <section className="bug-filter ">
             <h2>Bugs Filter</h2>
@@ -27,7 +30,7 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
                         id="title"
                         name="title"
                         placeholder="By title"
-                        value={filterByToEdit.title}
+                        value={title}
                         onChange={handleChange}
                     />
                 </div>
@@ -37,10 +40,11 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
                         id="severity"
                         name="severity"
                         placeholder="By severity"
-                        value={filterByToEdit.severity || ''}
+                        value={severity}
                         onChange={handleChange}
                     />
                 </div>
+                <SortDropdown sortBy={sortBy} handleChange={handleChange}></SortDropdown>
             </form>
 
         </section>
