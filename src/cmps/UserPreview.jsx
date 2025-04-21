@@ -24,7 +24,7 @@ export function UserPreview({ user, onRemoveUser, onEditUser }) {
                 </AccordionDetails>
                 <AccordionActions>
                     <Button color="error" onClick={()=> onRemoveUser(user._id)}>Delete</Button>
-                    <Button color="warning" onClick={()=> onEditUser(user)}>Edit</Button>
+                    <Button color="warning" onClick={()=> onEditUser({user})}>Edit</Button>
                 </AccordionActions>
             </Accordion>
         </>

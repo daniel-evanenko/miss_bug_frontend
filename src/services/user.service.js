@@ -10,6 +10,7 @@ export const userService = {
     getById,
     save,
     remove,
+    getEmptyUser
 }
 
 
@@ -49,4 +50,14 @@ async function save(user) {
         console.log('err:', err)
         throw err
     }
+}
+
+function getEmptyUser() {
+    return {
+        fullname: '',
+        username: '',
+        password: '',
+        score: 0
+    }
+
 }
