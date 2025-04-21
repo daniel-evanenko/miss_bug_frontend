@@ -1,0 +1,12 @@
+.password:hover .masked {
+    display: none;
+  }
+  
+  .password::after {
+    content: attr(data-secret);
+    display: none;
+  }
+  
+  .password:hover::after {
+    display: inline;
+  }
