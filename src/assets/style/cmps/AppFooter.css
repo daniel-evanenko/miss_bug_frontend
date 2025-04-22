@@ -1,6 +1,9 @@
-footer {
-    background-color: lightblue;
-    height: 80px;
-    display: flex;
-    align-items: center;
+.app-footer {
+
+    footer {
+        background-color: lightblue;
+        height: 80px;
+        display: flex;
+        align-items: center;
+    }
 }

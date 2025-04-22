@@ -139,7 +139,7 @@ export function UserEdit({ user, onSubmit }) {
                         <ErrorMessage className='err-msg' name="score" component="div" />
 
                         <button type="submit" disabled={isSubmitting}>
-                            Submit
+                            Save
                         </button>
                     </Form>
                 )}

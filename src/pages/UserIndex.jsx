@@ -22,7 +22,6 @@ export function UserIndex() {
     async function onRemoveUser(userId) {
         try {
             await userService.remove(userId)
-            console.log('Deleted Succesfully!')
             setUsers(prevUsers => prevUsers.filter((user) => user._id !== userId))
             showSuccessMsg('User removed')
         } catch (err) {
@@ -34,7 +33,6 @@ export function UserIndex() {
     function onOpenUserPopup({ user = userService.getEmptyUser() }) {
         setUserToEdit(user)
         setIsPopupOpen(true)
-        console.log("🚀 ~ onOpenUserPopup ~ userToEdit:", user)
     }
 
     async function onSubmitUser(user) {
@@ -92,7 +90,7 @@ export function UserIndex() {
                 <button onClick={onOpenUserPopup}>Add user</button>
             </div>
             <UserList users={users} onRemoveUser={onRemoveUser} onEditUser={onOpenUserPopup} ></UserList>
-            {isPopupOpen && <NicePopup main={<UserEdit user={userToEdit} onSubmit={onSubmitUser} ></UserEdit>} onClose={() => setIsPopupOpen(false)} />}
+            {isPopupOpen && <NicePopup header={<h1>{userToEdit._id ? "Edit user" : "Add user"}</h1>} main={<UserEdit user={userToEdit} onSubmit={onSubmitUser} ></UserEdit>} onClose={() => setIsPopupOpen(false)} />}
         </div>
     )
 
