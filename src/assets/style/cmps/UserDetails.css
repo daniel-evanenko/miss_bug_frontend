@@ -1,0 +1,25 @@
+.user-details {
+    padding-block: 5rem;
+    justify-items: center;
+    width: 750px;
+    height: 750px;
+    margin: auto;
+    background-color: beige;
+    margin-block: 5rem;
+}
+
+.user-details h4 {
+    color: var(--clr1);
+    font-size: 2rem;
+}
+
+.user-details p {
+    color: var(--clr2);
+    font-size: 1.5rem;
+}
+
+.user-details img {
+    max-width: 200px;
+    display: block;
+    margin: auto;
+}
