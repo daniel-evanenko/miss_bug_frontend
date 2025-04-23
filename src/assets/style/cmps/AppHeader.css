@@ -1,17 +1,12 @@
 .app-header {
     background-color: var(--clr1);
     color: var(--clr2bg-light);
-    
 }
 
 .header-container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-
-}
-
-.header-container h1 {
-    flex-grow: 1;
 }
 
 .app-nav {
@@ -19,13 +14,11 @@
     gap: 15px;
 }
 
-
 a.active {
     color: rgb(241, 212, 241);
     font-weight: 600;
     text-decoration: underline;
 }
-
 
 @media (max-width: 720px) {
     .app-header {

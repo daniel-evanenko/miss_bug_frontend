@@ -1,0 +1,21 @@
+.login-signup {
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .err-msg {
+        color: red;
+    }
+
+    h1,
+    h3 {
+        color: black;
+    }
+    a{
+        text-decoration: underline;
+
+    }
+}

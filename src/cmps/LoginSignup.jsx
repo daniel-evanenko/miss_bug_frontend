@@ -4,12 +4,13 @@ import * as Yup from 'yup';
 import { useState } from "react";
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { userService } from '../services/user.service';
+import { ImgUploader } from './ImgUploader';
 
 const EditUserSchema = Yup.object().shape({
     fullname: Yup.string().required('Fullname is required'),
     username: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
-    score: Yup.number().required('Score is required').positive('Score must be positive'),
 })
 
 function CustomInput({ handleExternalChange, ...props }) {
@@ -30,24 +31,19 @@ function CustomInput({ handleExternalChange, ...props }) {
         />
     )
 }
- 
 
 
-export function UserEdit({ user, onSubmit }) {
+export function LoginSignup() {
 
-
-    const [userToEdit, setUserToEdit] = useState(user)
+    const [userToEdit, setUserToEdit] = useState(userService.getEmptyUser())
     const [showPassword, setShowPassword] = useState(false);
+    const [isSignup, setIsSignup] = useState(false)
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    const handleMouseUpPassword = (event) => {
-        event.preventDefault();
-    };
+    function onSubmit() {
+        console.log("🚀 ~ LoginSignup ~ userToEdit:", userToEdit)
+    }
 
     function handleChange({ target }) {
         const field = target.name
@@ -68,29 +64,53 @@ export function UserEdit({ user, onSubmit }) {
 
         setUserToEdit(prevUserToEdit => ({ ...prevUserToEdit, [field]: value }))
     }
+    function toggleSignup() {
+        setIsSignup(!isSignup)
+    }
+    function CustomButton() {
+        const message = isSignup
+            ? { text: "Already have an account?", action: "Login!" }
+            : { text: "Don't have an account?", action: "Signup!" };
+        return (
+            <h3>
+                {message.text} <a onClick={toggleSignup}>{message.action}</a>
+            </h3>
+        )
 
-    const { fullname, username, password, score } = userToEdit
+    }
+    function onUploaded(imgUrl) {
+        setUserToEdit(prevUserToEdit => ({ ...prevUserToEdit, imgUrl }))
+    }
+    const { fullname, username, password } = userToEdit
     return (
-        <div className='user-edit'>
+        <div className='login-signup'>
+            <h1>{isSignup ? 'Signup' : 'Login'}</h1>
             <Formik
                 enableReinitialize
                 initialValues={{
                     fullname: fullname || '',
                     username: username || '',
                     password: password || '',
-                    score: score || 0
                 }}
                 validationSchema={EditUserSchema}
-                onSubmit={() => onSubmit(userToEdit)}
+                onSubmit={onSubmit}
             >
                 {({ isSubmitting }) => (
                     <Form>
-                        <Field
-                            as={CustomInput}
-                            name="fullname"
-                            handleExternalChange={handleChange}
-                        />
-                        <ErrorMessage className='err-msg' name="fullname" component="div" />
+                        {isSignup && (
+                            <>
+                                <Field
+                                    as={CustomInput}
+                                    name="fullname"
+                                    handleExternalChange={handleChange}
+                                />
+                                <ErrorMessage
+                                    name="fullname"
+                                    component="div"
+                                    className="err-msg"
+                                />
+                            </>
+                        )}
                         <Field
                             as={CustomInput}
                             name="username"
@@ -115,8 +135,6 @@ export function UserEdit({ user, onSubmit }) {
                                                         showPassword ? "Hide password" : "Show password"
                                                     }
                                                     onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword}
-                                                    onMouseUp={handleMouseUpPassword}
                                                     edge="end"
                                                 >
                                                     {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -130,16 +148,11 @@ export function UserEdit({ user, onSubmit }) {
                         </Field>
                         <ErrorMessage className='err-msg' name="password" component="div" />
 
-                        <Field
-                            as={CustomInput}
-                            name="score"
-                            type="number"
-                            handleExternalChange={handleChange}
-                        />
-                        <ErrorMessage className='err-msg' name="score" component="div" />
+                        {isSignup && <ImgUploader onUploaded={onUploaded} />}
+                        <CustomButton></CustomButton>
 
                         <button type="submit" disabled={isSubmitting}>
-                            Save
+                            {isSignup ? 'Signup' : 'Login'}
                         </button>
                     </Form>
                 )}

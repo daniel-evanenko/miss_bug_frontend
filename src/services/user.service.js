@@ -5,12 +5,15 @@ const axios = Axios.create({
 })
 const BASE_URL = 'http://127.0.0.1:3030/api/user/'
 
+const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
+
 export const userService = {
     query,
     getById,
     save,
     remove,
-    getEmptyUser
+    getEmptyUser,
+    getLoggedinUser
 }
 
 
@@ -54,10 +57,13 @@ async function save(user) {
 
 function getEmptyUser() {
     return {
-        fullname: '',
         username: '',
+        fullname: '',
         password: '',
-        score: 0
+        imgUrl: '',
     }
+}
 
+function getLoggedinUser() {
+    return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
 }

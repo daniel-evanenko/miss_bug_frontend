@@ -30,8 +30,8 @@ export function UserDetails() {
     if (!user) return <h1>loadings....</h1>
     return (
         <div className="user-details main-layout">
-            <h4>{user.fullname}</h4>
-            <Avatar alt={user.fullname} src="/static/images/avatar/1.jpg" />
+            <Avatar alt={user.fullname} src={user.imgUrl || 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'} />
+            <p>Fullname: <span>{user.fullname}</span></p>
             <p>Username: <span>{user.username}</span></p>
             <p>Password: <span>{user.password}</span></p>
             <p>Score: <span>{user.score}</span></p>
