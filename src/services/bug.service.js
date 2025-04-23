@@ -3,7 +3,10 @@ import Axios from 'axios'
 const axios = Axios.create({
     withCredentials: true,
 })
-const BASE_URL = 'http://127.0.0.1:3030/api/bug/'
+
+const BASE_URL = (process.env.NODE_ENV !== 'development') ?
+    '/api/' :
+    '//localhost:3030/api/bug/'
 
 export const bugService = {
     query,

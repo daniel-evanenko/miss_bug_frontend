@@ -31,7 +31,6 @@ export function UserIndex() {
 
     }
     function onOpenUserPopup({ user = userService.getEmptyUser() }) {
-        console.log("🚀 ~ onOpenUserPopup ~ user:", user)
         setUserToEdit(user)
         setIsPopupOpen(true)
     }

@@ -41,14 +41,6 @@ export function UserEdit({ user, onSubmit }) {
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    const handleMouseUpPassword = (event) => {
-        event.preventDefault();
-    };
-
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
@@ -115,8 +107,6 @@ export function UserEdit({ user, onSubmit }) {
                                                         showPassword ? "Hide password" : "Show password"
                                                     }
                                                     onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword}
-                                                    onMouseUp={handleMouseUpPassword}
                                                     edge="end"
                                                 >
                                                     {showPassword ? <VisibilityOff /> : <Visibility />}

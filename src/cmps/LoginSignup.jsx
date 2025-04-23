@@ -41,10 +41,6 @@ export function LoginSignup() {
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    function onSubmit() {
-        console.log("🚀 ~ LoginSignup ~ userToEdit:", userToEdit)
-    }
-
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
@@ -81,6 +77,21 @@ export function LoginSignup() {
     function onUploaded(imgUrl) {
         setUserToEdit(prevUserToEdit => ({ ...prevUserToEdit, imgUrl }))
     }
+
+    async function onSubmit() {
+
+        const method = isSignup ? 'signup' : 'login'
+        try {
+            const user = await userService[method](userToEdit)
+            setLoggedinUser(user)
+            showSuccessMsg(`Welcome ${user.fullname}`)
+        } catch (err) {
+            console.log(`Cannot ${method} :`, err)
+            showErrorMsg(`Cannot ${method}`)
+        }
+
+    }
+
     const { fullname, username, password } = userToEdit
     return (
         <div className='login-signup'>
