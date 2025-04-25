@@ -8,23 +8,26 @@ import { AboutUs } from './pages/AboutUs.jsx'
 import { Route, HashRouter as Router, Routes } from 'react-router-dom'
 import { UserIndex } from './pages/UserIndex.jsx'
 import { UserDetails } from './pages/UserDetails.jsx'
+import { UserProvider } from './context/UserContext.jsx'
 
 
 export function App() {
     return (
-        <Router>
-            <AppHeader />
-            <main className='container'>
-                <Routes>
-                    <Route path='/' element={<Home />} />
-                    <Route path='/bug' element={<BugIndex />} />
-                    <Route path='/bug/:bugId' element={<BugDetails />} />
-                    <Route path='/about' element={<AboutUs />} />
-                    <Route path='/user' element={<UserIndex />}></Route>
-                    <Route path='/user/:userId' element={<UserDetails />}></Route>
-                </Routes>
-            </main>
-            <AppFooter />
-        </Router>
+        <UserProvider>
+            <Router>
+                <AppHeader />
+                <main className='container'>
+                    <Routes>
+                        <Route path='/' element={<Home />} />
+                        <Route path='/bug' element={<BugIndex />} />
+                        <Route path='/bug/:bugId' element={<BugDetails />} />
+                        <Route path='/about' element={<AboutUs />} />
+                        <Route path='/user' element={<UserIndex />}></Route>
+                        <Route path='/user/:userId' element={<UserDetails />}></Route>
+                    </Routes>
+                </main>
+                <AppFooter />
+            </Router>
+        </UserProvider>
     )
 }

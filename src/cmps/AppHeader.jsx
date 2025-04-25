@@ -2,26 +2,22 @@
 import { useEffect, useState } from 'react'
 import { UserMsg } from './UserMsg'
 import { NavLink } from 'react-router-dom'
-import { userService } from '../services/user.service'
 import { NicePopup } from './NicePopup'
 import { LoginSignup } from './LoginSignup'
+import { useUser } from '../context/UserContext.jsx'
 
 export function AppHeader() {
-    const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser())
+    const { user, handleLogin, handleSignup, handleLogout } = useUser()
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
     useEffect(() => {
         // component did mount when dependancy array is empty
     }, [])
 
-    async function onLogout() {
-        console.log('logout');
-        try {
-            await userService.logout()
-            setLoggedinUser(null)
-        } catch (err) {
-            console.log('can not logout');
-        }
+
+
+    function onClosePopup() {
+        setIsPopupOpen(false)
     }
 
     return (
@@ -30,8 +26,8 @@ export function AppHeader() {
                 <h1>Bugs are Forever</h1>
 
                 <section className="login-signup-container">
-                    {loggedinUser && <div className="user-preview">
-                        <h3>Hello {loggedinUser.fullname}</h3>
+                    {user && <div className="user-preview">
+                        <h3>Hello {user.fullname}</h3>
                     </div>}
                 </section>
 
@@ -40,11 +36,10 @@ export function AppHeader() {
                     <NavLink to="/bug">Bugs</NavLink> |
                     <NavLink to="/user">Users</NavLink> |
                     <NavLink to="/about">About</NavLink> |
-                    {loggedinUser ? <a onClick={onLogout}> Logout</a> : <a onClick={() => setIsPopupOpen(true)
-                    }>Login</a>}
+                    {user ? <a onClick={handleLogout}> Logout</a> : <a onClick={() => setIsPopupOpen(true)}>Login</a>}
                 </nav>
             </div>
-            {isPopupOpen && <NicePopup main={<LoginSignup></LoginSignup>} onClose={() => setIsPopupOpen(false)} />}
+            {isPopupOpen && <NicePopup main={<LoginSignup onClose={onClosePopup} handleLogin={handleLogin} handleSignup={handleSignup} ></LoginSignup>} onClose={onClosePopup} />}
 
             <UserMsg />
         </header>

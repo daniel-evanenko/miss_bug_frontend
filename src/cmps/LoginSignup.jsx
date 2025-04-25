@@ -6,12 +6,18 @@ import { Avatar, FormControl, IconButton, InputAdornment, InputLabel, OutlinedIn
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { userService } from '../services/user.service';
 import InputFileUpload from './InputFileUpload';
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service';
 
-const EditUserSchema = Yup.object().shape({
+const SignupSchema = Yup.object().shape({
     fullname: Yup.string().required('Fullname is required'),
     username: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
-})
+});
+
+const LoginSchema = Yup.object().shape({
+    username: Yup.string().required('Username is required'),
+    password: Yup.string().required('Password is required'),
+});
 
 function CustomInput({ handleExternalChange, ...props }) {
     const { name, onChange } = props
@@ -33,7 +39,7 @@ function CustomInput({ handleExternalChange, ...props }) {
 }
 
 
-export function LoginSignup() {
+export function LoginSignup({ onClose, handleSignup, handleLogin }) {
 
     const [userToEdit, setUserToEdit] = useState(userService.getEmptyUser())
     const [showPassword, setShowPassword] = useState(false);
@@ -79,17 +85,14 @@ export function LoginSignup() {
     }
 
     async function onSubmit() {
-
-        const method = isSignup ? 'signup' : 'login'
         try {
-            const user = await userService[method](userToEdit)
-            setLoggedinUser(user)
-            showSuccessMsg(`Welcome ${user.fullname}`)
-        } catch (err) {
-            console.log(`Cannot ${method} :`, err)
-            showErrorMsg(`Cannot ${method}`)
-        }
+            isSignup ? await handleSignup(userToEdit) : await handleLogin(userToEdit);
 
+            onClose();
+        } catch (err) {
+            console.error(`Cannot ${isSignup ? 'signup' : 'login'}:`, err);
+            showErrorMsg(`Cannot ${isSignup ? 'signup' : 'login'}`);
+        }
     }
 
     const { fullname, username, password } = userToEdit
@@ -104,14 +107,14 @@ export function LoginSignup() {
                     username: username || '',
                     password: password || '',
                 }}
-                validationSchema={EditUserSchema}
+                validationSchema={isSignup ? SignupSchema : LoginSchema}
                 onSubmit={onSubmit}
             >
                 {({ isSubmitting }) => (
                     <Form>
                         {isSignup && (
                             <>
-                                <Avatar className='avatar' alt={userToEdit.fullname} src={userToEdit.imgUrl || 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'} />
+                                <Avatar className='avatar' alt={userToEdit.fullname} src={userToEdit.imgUrl} />
 
                                 <Field
                                     as={CustomInput}

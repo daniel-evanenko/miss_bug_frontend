@@ -73,17 +73,17 @@ function getEmptyUser() {
         fullname: '',
         password: '',
         imgUrl: '',
+        score: '1000',
     }
 }
 async function login(credentials) {
+    console.log("🚀 ~ login ~ credentials:", credentials)
     const { data: user } = await axios.post(BASE_AUTH_URL + 'login', credentials)
-    console.log('user', user);
     if (user) {
         return saveLocalUser(user)
     }
 }
 async function signup(credentials) {
-
     const { data: user } = await axios.post(BASE_AUTH_URL + 'signup', credentials)
     return saveLocalUser(user)
 }
@@ -94,7 +94,7 @@ async function logout() {
 }
 
 function saveLocalUser(user) {
-    user = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin }
+    user = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin, score: user.score }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
     return user
 }
