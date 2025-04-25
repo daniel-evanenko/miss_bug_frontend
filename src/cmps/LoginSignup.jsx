@@ -2,10 +2,10 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useState } from "react";
-import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
+import { Avatar, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { userService } from '../services/user.service';
-import { ImgUploader } from './ImgUploader';
+import InputFileUpload from './InputFileUpload';
 
 const EditUserSchema = Yup.object().shape({
     fullname: Yup.string().required('Fullname is required'),
@@ -96,6 +96,7 @@ export function LoginSignup() {
     return (
         <div className='login-signup'>
             <h1>{isSignup ? 'Signup' : 'Login'}</h1>
+
             <Formik
                 enableReinitialize
                 initialValues={{
@@ -110,6 +111,8 @@ export function LoginSignup() {
                     <Form>
                         {isSignup && (
                             <>
+                                <Avatar className='avatar' alt={userToEdit.fullname} src={userToEdit.imgUrl || 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'} />
+
                                 <Field
                                     as={CustomInput}
                                     name="fullname"
@@ -159,7 +162,7 @@ export function LoginSignup() {
                         </Field>
                         <ErrorMessage className='err-msg' name="password" component="div" />
 
-                        {isSignup && <ImgUploader onUploaded={onUploaded} />}
+                        {isSignup && <InputFileUpload onUploaded={onUploaded} />}
                         <CustomButton></CustomButton>
 
                         <button type="submit" disabled={isSubmitting}>

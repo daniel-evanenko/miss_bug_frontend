@@ -14,8 +14,15 @@
     h3 {
         color: black;
     }
-    a{
+
+    a {
         text-decoration: underline;
 
+    }
+
+    .avatar {
+        align-self: center;
+        width: 56px;
+        height: 56px;
     }
 }
