@@ -5,9 +5,11 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { BugFilter } from '../cmps/bugFilter.jsx'
 import { utilService } from '../services/util.service.js'
+import { useUser } from '../context/UserContext.jsx'
 
 
 export function BugIndex() {
+    const { user } = useUser()
     const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
@@ -33,13 +35,19 @@ export function BugIndex() {
     }
 
     async function onAddBug() {
+        const owner = {
+            _id: user?._id || '',
+            fullname: user?.fullname || ''
+        }
         const bug = {
             title: prompt('Bug title?'),
             severity: +prompt('Bug severity?'),
             description: prompt('Bug description'),
             createdAt: Date.now(),
-            labels: utilService.getRandomLabels()
+            labels: utilService.getRandomLabels(),
+            owner
         }
+        console.log("🚀 ~ onAddBug ~ bug:", bug)
         try {
             const savedBug = await bugService.save(bug)
             console.log('Added Bug', savedBug)
