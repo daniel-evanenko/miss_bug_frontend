@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { UserMsg } from './UserMsg'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { NicePopup } from './NicePopup'
 import { LoginSignup } from './LoginSignup'
 import { useUser } from '../context/UserContext.jsx'
@@ -29,7 +29,7 @@ export function AppHeader() {
 
                 <section className="login-signup-container">
                     {loggedInUser && <div className="user-preview">
-                        <h3>Hello {loggedInUser.fullname}</h3>
+                        <h3>Hello {<Link to={`/user/${loggedInUser._id}`}>{loggedInUser.fullname}</Link>}</h3>
                     </div>}
                 </section>
 

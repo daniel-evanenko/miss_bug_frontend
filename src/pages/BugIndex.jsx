@@ -13,6 +13,7 @@ export function BugIndex() {
     const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
+
     useEffect(() => {
         loadBugs()
     }, [filterBy])
@@ -22,6 +23,9 @@ export function BugIndex() {
         setBugs(bugs)
     }
 
+    function isAllowed() {
+        return loggedInUser
+    }
     async function onRemoveBug(bugId) {
         try {
             await bugService.remove(bugId)
@@ -98,8 +102,12 @@ export function BugIndex() {
             <h3>Bugs App</h3>
             <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} ></BugFilter>
             <main>
-                <button onClick={onAddBug}>Add Bug ⛐</button>
-                <button onClick={onDownloadBugs}>Download Bugs ⛐</button>
+                {isAllowed() && (
+                    <>
+                        <button onClick={onAddBug}>Add Bug ⛐</button>
+                        <button onClick={onDownloadBugs}>Download Bugs ⛐</button>
+                    </>
+                )}
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>
         </section>
