@@ -70,7 +70,7 @@ async function downloadPdf() {
 }
 
 function getDefaultFilter() {
-    return { title: '', severity: '', sortBy: 'title', byLabels: [], ownerId: '' }
+    return { title: '', sortBy: 'title', byLabels: [], ownerId: '' }
 }
 
 async function getBugsByOwnerId(ownerId) {
