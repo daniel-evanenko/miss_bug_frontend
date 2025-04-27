@@ -89,7 +89,7 @@ export function UserEdit({ user, onSubmit }) {
                             handleExternalChange={handleChange}
                         />
                         <ErrorMessage className='err-msg' name="username" component="div" />
-                        <Field name="password">
+                        {/* <Field name="password">
                             {({ field }) => (
                                 <FormControl variant="outlined">
                                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -118,7 +118,7 @@ export function UserEdit({ user, onSubmit }) {
                                 </FormControl>
                             )}
                         </Field>
-                        <ErrorMessage className='err-msg' name="password" component="div" />
+                        <ErrorMessage className='err-msg' name="password" component="div" /> */}
 
                         <Field
                             as={CustomInput}

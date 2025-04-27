@@ -14,7 +14,9 @@ export function AppHeader() {
         // component did mount when dependancy array is empty
     }, [])
 
-
+    function isAllowed() {
+        return loggedInUser && loggedInUser.isAdmin
+    }
 
     function onClosePopup() {
         setIsPopupOpen(false)
@@ -34,7 +36,11 @@ export function AppHeader() {
                 <nav className='app-nav'>
                     <NavLink to="/">Home</NavLink> |
                     <NavLink to="/bug">Bugs</NavLink> |
-                    <NavLink to="/user">Users</NavLink> |
+                    {isAllowed() && (
+                        <>
+                            <NavLink to="/user">Users</NavLink> <span>|</span>
+                        </>
+                    )}
                     <NavLink to="/about">About</NavLink> |
                     {loggedInUser ? <a onClick={handleLogout}> Logout</a> : <a onClick={() => setIsPopupOpen(true)}>Login</a>}
                 </nav>

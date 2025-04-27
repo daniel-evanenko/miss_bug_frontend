@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom'
 import { BugPreview } from './BugPreview'
+import { useUser } from '../context/UserContext'
 
-export function BugList({ loggedInUser, bugs, onRemoveBug, onEditBug }) {
+export function BugList({ bugs, onRemoveBug, onEditBug }) {
+
+    const { loggedInUser } = useUser()
 
     function isAllowed(bug) {
         return loggedInUser && (loggedInUser.isAdmin || bug?.owner?._id === loggedInUser?._id)

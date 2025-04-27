@@ -100,7 +100,7 @@ export function BugIndex() {
             <main>
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <button onClick={onDownloadBugs}>Download Bugs ⛐</button>
-                <BugList loggedInUser={loggedInUser} bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+                <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>
         </section>
     )

@@ -22,9 +22,7 @@ export function UserDetails() {
     }, [userId])
 
     async function loadBugs() {
-        const filterBy = bugService.getDefaultFilter()
-        filterBy.ownerId = userId
-        const bugs = await bugService.query(filterBy)
+        const bugs = await bugService.getBugsByOwnerId(userId)
         setBugs(bugs)
     }
 

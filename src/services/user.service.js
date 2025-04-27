@@ -77,7 +77,6 @@ function getEmptyUser() {
     }
 }
 async function login(credentials) {
-    console.log("🚀 ~ login ~ credentials:", credentials)
     const { data: user } = await axios.post(BASE_AUTH_URL + 'login', credentials)
     if (user) {
         return saveLocalUser(user)

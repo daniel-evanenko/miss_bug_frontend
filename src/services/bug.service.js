@@ -14,7 +14,8 @@ export const bugService = {
     save,
     remove,
     getDefaultFilter,
-    downloadPdf
+    downloadPdf,
+    getBugsByOwnerId
 }
 
 
@@ -70,4 +71,15 @@ async function downloadPdf() {
 
 function getDefaultFilter() {
     return { title: '', severity: '', sortBy: 'title', byLabels: [], ownerId: '' }
+}
+
+async function getBugsByOwnerId(ownerId) {
+    const filterBy = { ownerId }
+    try {
+        const bugs = await bugService.query(filterBy)
+        return bugs
+    } catch (err) {
+        console.log('err:', err)
+        throw err
+    }
 }
