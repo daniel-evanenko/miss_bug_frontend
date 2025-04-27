@@ -7,7 +7,7 @@ import { LoginSignup } from './LoginSignup'
 import { useUser } from '../context/UserContext.jsx'
 
 export function AppHeader() {
-    const { user, handleLogin, handleSignup, handleLogout } = useUser()
+    const { loggedInUser, handleLogin, handleSignup, handleLogout } = useUser()
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
     useEffect(() => {
@@ -26,8 +26,8 @@ export function AppHeader() {
                 <h1>Bugs are Forever</h1>
 
                 <section className="login-signup-container">
-                    {user && <div className="user-preview">
-                        <h3>Hello {user.fullname}</h3>
+                    {loggedInUser && <div className="user-preview">
+                        <h3>Hello {loggedInUser.fullname}</h3>
                     </div>}
                 </section>
 
@@ -36,7 +36,7 @@ export function AppHeader() {
                     <NavLink to="/bug">Bugs</NavLink> |
                     <NavLink to="/user">Users</NavLink> |
                     <NavLink to="/about">About</NavLink> |
-                    {user ? <a onClick={handleLogout}> Logout</a> : <a onClick={() => setIsPopupOpen(true)}>Login</a>}
+                    {loggedInUser ? <a onClick={handleLogout}> Logout</a> : <a onClick={() => setIsPopupOpen(true)}>Login</a>}
                 </nav>
             </div>
             {isPopupOpen && <NicePopup main={<LoginSignup onClose={onClosePopup} handleLogin={handleLogin} handleSignup={handleSignup} ></LoginSignup>} onClose={onClosePopup} />}

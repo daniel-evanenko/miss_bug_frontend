@@ -9,7 +9,7 @@ import { useUser } from '../context/UserContext.jsx'
 
 
 export function BugIndex() {
-    const { user } = useUser()
+    const { loggedInUser } = useUser()
     const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
@@ -36,8 +36,8 @@ export function BugIndex() {
 
     async function onAddBug() {
         const owner = {
-            _id: user?._id || '',
-            fullname: user?.fullname || ''
+            _id: loggedInUser?._id || '',
+            fullname: loggedInUser?.fullname || ''
         }
         const bug = {
             title: prompt('Bug title?'),
@@ -47,7 +47,6 @@ export function BugIndex() {
             labels: utilService.getRandomLabels(),
             owner
         }
-        console.log("🚀 ~ onAddBug ~ bug:", bug)
         try {
             const savedBug = await bugService.save(bug)
             console.log('Added Bug', savedBug)
@@ -101,7 +100,7 @@ export function BugIndex() {
             <main>
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <button onClick={onDownloadBugs}>Download Bugs ⛐</button>
-                <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+                <BugList loggedInUser={loggedInUser} bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>
         </section>
     )

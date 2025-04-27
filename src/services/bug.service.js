@@ -69,5 +69,5 @@ async function downloadPdf() {
 }
 
 function getDefaultFilter() {
-    return { title: '', severity: '', sortBy: 'title', byLabels: [] }
+    return { title: '', severity: '', sortBy: 'title', byLabels: [], ownerId: '' }
 }

@@ -1,11 +1,9 @@
 .user-details {
-    padding-block: 5rem;
+    padding: 1rem;
     justify-items: center;
-    width: 750px;
-    height: 750px;
+    width: 400px;
     margin: auto;
     background-color: beige;
-    margin-block: 5rem;
 }
 
 .user-details h4 {

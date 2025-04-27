@@ -7,35 +7,34 @@ const UserContext = createContext()
 
 
 export function UserProvider({ children }) {
-    const [user, setUser] = useState(null);
+    const [loggedInUser, setLoggedInUser] = useState(null);
 
     useEffect(() => {
         const savedUser = userService.getLoggedinUser();
-        if (savedUser) setUser(savedUser);
+        if (savedUser) setLoggedInUser(savedUser);
     }, []);
 
     const handleLogin = async (credentials) => {
-        console.log("🚀 ~ handleLogin ~ handleLogin:", handleLogin)
         const loggedInUser = await userService.login(credentials);
-        setUser(loggedInUser);
+        setLoggedInUser(loggedInUser);
         showSuccessMsg(`Welcome ${loggedInUser.fullname}`);
 
     };
 
     const handleSignup = async (credentials) => {
         const newUser = await userService.signup(credentials);
-        setUser(newUser);
+        setLoggedInUser(newUser);
         showSuccessMsg(`Welcome ${newUser.fullname}`);
 
     };
 
     const handleLogout = async () => {
         await userService.logout();
-        setUser(null);
+        setLoggedInUser(null);
     };
 
     return (
-        <UserContext.Provider value={{ user, handleLogin, handleSignup, handleLogout }}>
+        <UserContext.Provider value={{ loggedInUser, handleLogin, handleSignup, handleLogout }}>
             {children}
         </UserContext.Provider>
     );
