@@ -46,6 +46,7 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
                         placeholder="By severity"
                         value={severity}
                         onChange={handleChange}
+                        min={0}
                     />
                 </div>
                 <SortDropdown sortBy={sortBy} handleChange={handleChange}></SortDropdown>

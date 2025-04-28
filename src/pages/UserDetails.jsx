@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { showErrorMsg } from '../services/event-bus.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { useParams } from 'react-router'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -8,23 +8,19 @@ import { userService } from '../services/user.service.js'
 import { Avatar } from '@mui/material'
 import { BugList } from '../cmps/BugList.jsx'
 import { bugService } from '../services/bug.service.js'
+import { useBug } from '../context/BugContext.jsx'
 
 
 export function UserDetails() {
 
     const { userId } = useParams()
     const [user, setUser] = useState(null)
-    const [bugs, setBugs] = useState([])
+    const { bugs, loadBugs, updateBug, removeBug } = useBug();
 
     useEffect(() => {
         loadUser()
-        loadBugs()
+        loadBugs({ ownerId: userId })
     }, [userId])
-
-    async function loadBugs() {
-        const bugs = await bugService.getBugsByOwnerId(userId)
-        setBugs(bugs)
-    }
 
     async function loadUser() {
         try {
@@ -36,6 +32,30 @@ export function UserDetails() {
         }
     }
 
+
+    async function onRemoveBug(bugId) {
+        try {
+            await removeBug(bugId)
+            showSuccessMsg('Bug removed')
+        } catch (err) {
+            console.log('Error from onRemoveBug ->', err)
+            showErrorMsg('Cannot remove bug')
+        }
+    }
+
+    async function onEditBug(bug) {
+        const severity = +prompt('New severity?')
+        const description = prompt('New description?')
+        const bugToSave = { ...bug, severity, description }
+        try {
+
+            await updateBug(bugToSave)
+            showSuccessMsg('Bug updated')
+        } catch (err) {
+            console.log('Error from onEditBug ->', err)
+            showErrorMsg('Cannot update bug')
+        }
+    }
     if (!user) return <h1>loadings....</h1>
     return (
         <section>
@@ -48,7 +68,7 @@ export function UserDetails() {
                 <button><Link to="/user">Back to List</Link></button>
             </div>
             {bugs.length ? <h1>User bugs</h1> : <h1>User has no bugs</h1>}
-            <BugList bugs={bugs}></BugList>
+            <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} ></BugList>
 
         </section>
     )

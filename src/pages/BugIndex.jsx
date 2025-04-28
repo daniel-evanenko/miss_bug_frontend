@@ -6,31 +6,26 @@ import { useEffect } from 'react'
 import { BugFilter } from '../cmps/bugFilter.jsx'
 import { utilService } from '../services/util.service.js'
 import { useUser } from '../context/UserContext.jsx'
+import { useBug } from '../context/BugContext.jsx'
 
 
 export function BugIndex() {
     const { loggedInUser } = useUser()
-    const [bugs, setBugs] = useState([])
+    const { bugs, loadBugs, addBug, updateBug, removeBug } = useBug();
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
 
     useEffect(() => {
-        loadBugs()
+        loadBugs(filterBy)
     }, [filterBy])
-
-    async function loadBugs() {
-        const bugs = await bugService.query(filterBy)
-        setBugs(bugs)
-    }
 
     function isAllowed() {
         return loggedInUser
     }
+
     async function onRemoveBug(bugId) {
         try {
-            await bugService.remove(bugId)
-            console.log('Deleted Succesfully!')
-            setBugs(prevBugs => prevBugs.filter((bug) => bug._id !== bugId))
+            await removeBug(bugId)
             showSuccessMsg('Bug removed')
         } catch (err) {
             console.log('Error from onRemoveBug ->', err)
@@ -52,9 +47,7 @@ export function BugIndex() {
             owner
         }
         try {
-            const savedBug = await bugService.save(bug)
-            console.log('Added Bug', savedBug)
-            setBugs(prevBugs => [...prevBugs, savedBug])
+            await addBug(bug)
             showSuccessMsg('Bug added')
         } catch (err) {
             console.log('Error from onAddBug ->', err)
@@ -68,11 +61,7 @@ export function BugIndex() {
         const bugToSave = { ...bug, severity, description }
         try {
 
-            const savedBug = await bugService.save(bugToSave)
-            console.log('Updated Bug:', savedBug)
-            setBugs(prevBugs => prevBugs.map((currBug) =>
-                currBug._id === savedBug._id ? savedBug : currBug
-            ))
+            await updateBug(bugToSave)
             showSuccessMsg('Bug updated')
         } catch (err) {
             console.log('Error from onEditBug ->', err)
@@ -99,7 +88,6 @@ export function BugIndex() {
     }
     return (
         <section >
-            <h3>Bugs App</h3>
             <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} ></BugFilter>
             <main>
                 {isAllowed() && (
