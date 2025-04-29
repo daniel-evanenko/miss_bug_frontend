@@ -15,17 +15,16 @@ export function UserDetails() {
 
     const { userId } = useParams()
     const [user, setUser] = useState(null)
-    const { bugs, loadBugs, updateBug, removeBug } = useBug();
-
+    const [bugs, setBugs] = useState([])
     useEffect(() => {
         loadUser()
-        loadBugs({ ownerId: userId })
     }, [userId])
 
     async function loadUser() {
         try {
             const user = await userService.getById(userId)
             setUser(user)
+            setBugs(user.bugs)
         } catch (err) {
             showErrorMsg('Cannot load user')
 
@@ -35,7 +34,9 @@ export function UserDetails() {
 
     async function onRemoveBug(bugId) {
         try {
-            await removeBug(bugId)
+            await bugService.remove(bugId)
+            const updatedBugs = bugs.filter(bug => bug._id !== bugId)
+            setBugs(updatedBugs)
             showSuccessMsg('Bug removed')
         } catch (err) {
             console.log('Error from onRemoveBug ->', err)
@@ -43,19 +44,33 @@ export function UserDetails() {
         }
     }
 
-    async function onEditBug(bug) {
-        const severity = +prompt('New severity?')
-        const description = prompt('New description?')
-        const bugToSave = { ...bug, severity, description }
-        try {
 
-            await updateBug(bugToSave)
-            showSuccessMsg('Bug updated')
+    async function onEditBug(bug) {
+        const severityInput = prompt('New severity?', bug.severity);
+        if (severityInput === null) return;
+        const severity = +severityInput;
+        if (isNaN(severity)) return;
+
+        const description = prompt('New description?', bug.description);
+        if (description === null) return;
+
+        const bugToSave = { ...bug, severity, description };
+
+        try {
+            await bugService.save(bugToSave);
+
+            const updatedBugs = bugs.map(currBug =>
+                currBug._id === bugToSave._id ? bugToSave : currBug
+            );
+
+            setBugs(updatedBugs);
+            showSuccessMsg('Bug updated');
         } catch (err) {
-            console.log('Error from onEditBug ->', err)
-            showErrorMsg('Cannot update bug')
+            console.log('Error from onEditBug ->', err);
+            showErrorMsg('Cannot update bug');
         }
     }
+
     if (!user) return <h1>loadings....</h1>
     return (
         <section>

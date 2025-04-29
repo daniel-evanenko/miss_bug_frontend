@@ -74,6 +74,7 @@ function getEmptyUser() {
         password: '',
         imgUrl: '',
         score: '1000',
+        isAdmin: false
     }
 }
 async function login(credentials) {
