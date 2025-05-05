@@ -1,0 +1,33 @@
+
+import { useUser } from '../context/UserContext'
+import { MsgPreview } from './MsgPreview'
+
+export function MsgList({ msgs, onRemoveMsg }) {
+
+    const { loggedInUser } = useUser()
+
+    function isAllowed() {
+        return loggedInUser && loggedInUser.isAdmin
+    }
+
+    return (
+        <ul className="msg-list">
+            {msgs.map((msg) => (
+                <li className="msg-preview" key={msg._id}>
+                    <MsgPreview msg={msg}></MsgPreview>
+                    <div>
+                        {isAllowed() && (
+                            <>
+                                <button onClick={() => onRemoveMsg(msg._id)}>
+                                    Remove
+                                </button>
+
+                            </>
+                        )}
+
+                    </div>
+                </li>
+            ))}
+        </ul>
+    )
+}

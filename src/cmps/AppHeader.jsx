@@ -41,6 +41,7 @@ export function AppHeader() {
                             <NavLink to="/user">Users</NavLink> <span>|</span>
                         </>
                     )}
+                    {loggedInUser && <> <NavLink to="/msg">Msgs</NavLink> <span>|</span></>}
                     <NavLink to="/about">About</NavLink> |
                     {loggedInUser ? <a onClick={handleLogout}> Logout</a> : <a onClick={() => setIsPopupOpen(true)}>Login</a>}
                 </nav>

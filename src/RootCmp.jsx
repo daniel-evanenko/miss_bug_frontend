@@ -7,6 +7,7 @@ import { BugDetails } from './pages/BugDetails.jsx'
 import { AboutUs } from './pages/AboutUs.jsx'
 import { Route, HashRouter as Router, Routes } from 'react-router-dom'
 import { UserIndex } from './pages/UserIndex.jsx'
+import { MsgIndex } from './pages/MsgIndex.jsx'
 import { UserDetails } from './pages/UserDetails.jsx'
 import { UserProvider } from './context/UserContext.jsx'
 import { BugProvider } from './context/BugContext.jsx'
@@ -26,6 +27,7 @@ export function App() {
                             <Route path='/about' element={<AboutUs />} />
                             <Route path='/user' element={<UserIndex />}></Route>
                             <Route path='/user/:userId' element={<UserDetails />}></Route>
+                            <Route path='/msg' element={<MsgIndex />}></Route>
                         </Routes>
                     </main>
                     <AppFooter />
