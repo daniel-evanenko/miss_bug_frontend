@@ -3,10 +3,9 @@ import { useUser } from '../context/UserContext'
 import { MsgPreview } from './MsgPreview'
 
 export function MsgList({ msgs, onRemoveMsg }) {
-
     const { loggedInUser } = useUser()
 
-    function isAllowed() {
+    function isAdmin() {
         return loggedInUser && loggedInUser.isAdmin
     }
 
@@ -16,7 +15,7 @@ export function MsgList({ msgs, onRemoveMsg }) {
                 <li className="msg-preview" key={msg._id}>
                     <MsgPreview msg={msg}></MsgPreview>
                     <div>
-                        {isAllowed() && (
+                        {isAdmin() && (
                             <>
                                 <button onClick={() => onRemoveMsg(msg._id)}>
                                     Remove
@@ -24,7 +23,6 @@ export function MsgList({ msgs, onRemoveMsg }) {
 
                             </>
                         )}
-
                     </div>
                 </li>
             ))}

@@ -13,6 +13,7 @@ export const msgService = {
     getById,
     save,
     remove,
+    getEmptyMsg
 }
 
 
@@ -52,4 +53,13 @@ async function save(msg) {
         console.log('err:', err)
         throw err
     }
+}
+
+function getEmptyMsg() {
+    return {
+        txt: '',
+        byUserId: '',
+        aboutBugId: ''
+    }
+
 }
